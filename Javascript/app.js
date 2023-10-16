@@ -5,6 +5,7 @@ export default class Dog {
   }
   getName() {
     console.log(this.name)
+    return this.name
   }
   setName(newName){
     this.name = newName
