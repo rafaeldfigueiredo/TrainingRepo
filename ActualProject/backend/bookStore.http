@@ -1,0 +1,11 @@
+POST http://localhost:5555/books
+Content-Type: application/json
+
+{
+  "title":"Doraemon",
+  "author":"Fig",
+  "publishedYear":2023
+}
+
+###
+GET  http://localhost:5555/books
