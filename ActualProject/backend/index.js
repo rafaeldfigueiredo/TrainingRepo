@@ -1,22 +1,41 @@
-import express from 'express'
-import {PORT, mongoDBURL} from './config.js'
-import mongoose from 'mongoose'
-import { Book } from './models/bookModels.js'
+import express from 'express';
+import { PORT, mongoDBURL } from './config.js';
 
-const app = express()
+import mongoose from 'mongoose';
+import { Book } from './models/bookModels.js';
 
-app.use(express.json())
+const app = express(); app.use(express.json());
 
-app.get("/",(req,res)=>{
-  return res
-  .status(200)
-  .send("Hello World")
+function errorMsg() {
+  console.log(error);
+  res.status(500).send({message: error.message})
+}
+
+app.get("/books", async (req,res)=>{
+  try {
+    const books = await Book.find({});
+    return res.status(200).json({
+      count: books.length,
+      data:books
+    })
+  } catch (error) {
+    errorMsg()
+  }
 })
+
+app.get("/books/:id", async (req,res)=>{
+try{
+  const {id} = req.params;
+  const book = await Book.findById(id)
+  return res.status(200).json({book})
+} catch (error) {
+    errorMsg()
+  }})
 
 app.post('/books', async (req,res)=>{
   try {
     if(!req.body.title || !req.body.author || !req.body.publishedYear){
-      return res.status(400).send({message:"Send all required fields: title, author and publishedYear"})
+      return res.status(400).send({message: "Send all required fields: title, author and published Year"})
     }
 
     const newBook = {
@@ -29,24 +48,27 @@ app.post('/books', async (req,res)=>{
 
     return res.status(201).send(book)
   } catch (error) {
-    console.log(error.message);
-    res.status(500).send({message:error.message})
+    errorMsg()
   }
 })
 
-app.get("/books", async(req,res)=>{
-  try {
-    const books = await Book.find({});
-    return res.status(200).json({
-      count: books.length,
-      data:books
-    })
-  } catch (error) {
-    console.log(error);
-    res.status(500).send({message: error.message})
+app.put('/books/:id',async (req,res)=>{
+  if(!req.body.title || !req.body.author || !req.body.publishedYear){
+    return res.status(400).send({message: "Send all required fields: title, author and published Year"})
   }
+  const {id} = req.params;
+  const result = await Book.findByIdAndUpdate(id,req.body)
+  if (!result){return res.status(404).json({message:'Book not found'})}
+  return res.status(200).json({result})
 })
 
+
+app.delete('/books/:id',async (req,res)=>{
+  const {id} = req.params;
+  const result = await Book.findByIdAndDelete(id,req.body)
+  if (!result){return res.status(404).json({message:'Book not found'})}
+  return res.status(200).send({message: 'Book delete successfully!'})
+})
 mongoose
 .connect(mongoDBURL)
 .then(()=>{
