@@ -1,11 +1,34 @@
+GET  http://localhost:5555/books
+
+###
+
+GET  http://localhost:5555/books/653a012fc946fc7e5aec59d4
+
+###
+
 POST http://localhost:5555/books
 Content-Type: application/json
 
 {
-  "title":"Doraemon",
-  "author":"Fig",
-  "publishedYear":2023
+  "title": "NODER",
+  "author":"Broooo",
+  "publishedYear":180
 }
 
 ###
-GET  http://localhost:5555/books
+
+PUT http://localhost:5555/books/653a012fc946fc7e5aec59d4
+Content-Type: application/json
+
+{
+  "title": "Doraemon - The Dino Boy",
+  "author":"bulma",
+  "publishedYear":180
+}
+
+###
+
+DELETE http://localhost:5555/books/653afa977f85106a53c6d1f1
+Content-Type: application/json
+
+##
