@@ -1,10 +1,10 @@
-import React from 'react'
+import React from 'react';
 
 const App = () => {
   return (
-    <React.Fragment>
+    <React.Fragment> 
     <div className='bg-red-400 text-white'>
-    App
+    Hello World
     </div>
     </React.Fragment>
   )
